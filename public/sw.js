@@ -3,8 +3,8 @@ const urlsToCache = [
   "/",
   "/index.html",
   "/manifest.json",
-  "/favicon.ico",
-  "/static/js/bundle.js",
+  // "/favicon.ico",
+  // "/static/js/bundle.js",
 ];
 
 // Install
