@@ -1,0 +1,20 @@
+{
+  "name": "Focus",
+  "short_name": "Focus",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#162456",
+  "theme_color": "#162456",
+  "icons": [
+    {
+      "src": "images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
