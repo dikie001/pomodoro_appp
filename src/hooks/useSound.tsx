@@ -1,19 +1,15 @@
 import { useRef, useEffect, useMemo } from "react";
-import tone1 from "/sounds/tone1.mp3";
-import tone2 from "/sounds/tone2.mp3";
-import tone3 from "/sounds/tone3.mp3";
-import tone4 from "/sounds/tone4.mp3";
-import tone5 from "/sounds/tone5.mp3";
+
 
 
 const useSound = () => {
   const soundMap = useMemo(
     () => ({
-      tone1: { src: tone1, volume: 1, loop: true },
-      tone2: { src: tone2, volume: 1, loop: true },
-      tone3: { src: tone3, volume: 1, loop: true },
-      tone4: { src: tone4, volume: 1, loop: true },
-      tone5: { src: tone5, volume: 1, loop: true },
+      tone1: { src: "/sounds/tone1.mp3", volume: 1, loop: true },
+      tone2: { src: "/sounds/tone2.mp3", volume: 1, loop: true },
+      tone3: { src: "/sounds/tone3.mp3", volume: 1, loop: true },
+      tone4: { src: "/sounds/tone4.mp3", volume: 1, loop: true },
+      tone5: { src: "/sounds/tone5.mp3", volume: 1, loop: true },
     }),
     []
   );
