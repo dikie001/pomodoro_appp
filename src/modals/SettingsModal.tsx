@@ -25,6 +25,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [notifications, setNotifications] = useState<boolean>(false);
   const [showTones, setShowTones] = useState<boolean>(false);
+  const [success, setSuccess] = useState<string>("");
 
   /**
    * Loads settings from localStorage on component mount
@@ -151,7 +152,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               >
                 {showTones ? <ChevronDown /> : <ChevronRight />}
               </button>
-              {showTones && <TonesModal setShowTones={setShowTones} />}
+              {showTones && (
+                <TonesModal
+                  setShowTones={setShowTones}
+                  setSuccess={setSuccess}
+                />
+              )}
             </div>
           )}
 
@@ -216,13 +222,18 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         <div className="px-6 py-4 border-t border-white/10">
           <button
             onClick={() => setShowSettingsModal(false)}
-            className="w-full py-2 px-4 bg-gradient-to-r from-cyan-800 to-blue-800 hover:from-cyan-900 hover:to-blue-900 rounded-lg text-white font-medium transition-all duration-200 hover:scale-[1.02] shadow-lg"
+            className="w-full py-2 px-4 bg-gradient-to-r from-cyan-800 to-blue-800 hover:from-cyan-900 hover:to-blue-900 rounded-xl text-white font-medium transition-all duration-200 hover:scale-[1.02] shadow-lg"
           >
             Done
           </button>
         </div>
+        {/* MODALS */}
+        {success !== "" && (
+          <div className="absolute top-2 py-2 px-6 font-medium rounded-xl shadow-lg  left-1/2 -translate-x-1/2  bg-gradient-to-r from-cyan-800 to-blue-800 ">
+            {success === "tones" && "Tones updated "}
+          </div>
+        )}
       </div>
-      {/* MODALS */}
     </div>
   );
 };

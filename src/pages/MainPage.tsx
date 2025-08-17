@@ -65,7 +65,7 @@ const MainPage: React.FC = () => {
       timeForResetRef.current = value;
       initialValueRef.current = totalSeconds;
       setPlaying(true);
-      playStart();
+      allowSound && playStart();
     }, 1050);
   };
 
@@ -250,7 +250,7 @@ const MainPage: React.FC = () => {
           : ""}
       </h2>
 
-      <main className="flex-1 flex items-center justify-center px-8 pb-6">
+      <main className="flex-1 flex items-center justify-center pt-4 px-8 pb-6">
         <div className="relative w-74 h-72 ">
           {/*Background circle */}
           <svg className="w-full h-full rotate-[-90deg]" viewBox="0 0 100 100">
