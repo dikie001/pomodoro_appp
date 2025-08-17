@@ -43,7 +43,7 @@ const MainPage: React.FC = () => {
   const offset = circumference - (progress / 100) * circumference;
   const [showSettings, setShowSettings] = useState<boolean>(false);
 
-  const { playComplete, playBeep } = useSound();
+  const { playComplete } = useSound();
 
   const handleFocusMode = (value: number, description: string) => {
     setInitialize(true);
