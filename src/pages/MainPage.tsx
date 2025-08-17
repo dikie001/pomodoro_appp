@@ -1,4 +1,4 @@
- import {
+import {
   Bed,
   Coffee,
   Focus,
@@ -42,8 +42,10 @@ const MainPage: React.FC = () => {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (progress / 100) * circumference;
   const [showSettings, setShowSettings] = useState<boolean>(false);
+  const toneNumberRef = useRef<number | null>(null);
 
-  const { playComplete } = useSound();
+  const { playTone1, playTone2, playTone3, playTone4, playTone5, pauseSound } =
+    useSound();
 
   const handleFocusMode = (value: number, description: string) => {
     setInitialize(true);
@@ -61,6 +63,7 @@ const MainPage: React.FC = () => {
 
   // restart the timer
   const handleRestart = () => {
+    pauseSound();
     handleFocusMode(
       timeForResetRef.current ? timeForResetRef.current : 25,
       mode
@@ -74,9 +77,13 @@ const MainPage: React.FC = () => {
     getSoundSettings();
   }, []);
 
-  //get the sound settings from storage
+  //get the sound and tone settings from storage
   const getSoundSettings = () => {
     const sound = localStorage.getItem("sound");
+    const tone = localStorage.getItem("tone");
+    const toneNumber = tone ? Number(tone) : 1;
+    toneNumberRef.current = toneNumber;
+
     if (sound === "true") {
       setAllowSound(true);
       soundSettingsRef.current = true;
@@ -85,6 +92,11 @@ const MainPage: React.FC = () => {
       soundSettingsRef.current = false;
     } else if (!sound) setAllowSound(true);
   };
+
+  //function to run everytime the settings modal closes
+  useEffect(() => {
+    getSoundSettings();
+  }, [showSettings]);
 
   // Get the current mode from local storage for theming
   const checkMode = async () => {
@@ -104,6 +116,7 @@ const MainPage: React.FC = () => {
 
   //handle play/pause button click
   const handlePlay = () => {
+    pauseSound();
     if (initialValueRef.current === 0) return;
     setPlaying(!playing);
     if (intervalRef.current !== null) {
@@ -114,6 +127,7 @@ const MainPage: React.FC = () => {
 
   // handle sound button click/// sound settings
   const handleSoundClick = () => {
+    if (allowSound) pauseSound();
     setAllowSound(!allowSound);
     soundSettingsRef.current = !soundSettingsRef.current;
     localStorage.setItem("sound", JSON.stringify(soundSettingsRef.current));
@@ -124,16 +138,27 @@ const MainPage: React.FC = () => {
     if (playing) {
       intervalRef.current = setInterval(() => {
         setFocusTime((prev) => {
-      
           if (prev <= -1) {
             if (intervalRef.current !== null) {
               clearInterval(intervalRef.current);
               intervalRef.current = null;
               setMode("");
-              console.log("timer reached zero...")
+              console.log("timer reached zero...");
               initialValueRef.current = 0;
               setPlaying(false);
-              if (allowSound) playComplete();
+
+              // Select tone based on user settings
+              if (allowSound) {
+                toneNumberRef.current === 1
+                  ? playTone1()
+                  : toneNumberRef.current === 2
+                  ? playTone2()
+                  : toneNumberRef.current === 3
+                  ? playTone3()
+                  : toneNumberRef.current === 4
+                  ? playTone4()
+                  : playTone5();
+              }
             }
             return 0;
           }
@@ -170,6 +195,7 @@ const MainPage: React.FC = () => {
           : "bg-gradient-to-bl from-purple-950 via-blue-950 to-green-950 "
       } min-h-screen  text-white`}
     >
+    
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-white/10">
         <div className="flex items-center space-x-2">
@@ -195,7 +221,10 @@ const MainPage: React.FC = () => {
             )}
           </button>
           <button
-            onClick={() => setShowSettings(!showSettings)}
+            onClick={() => {
+              setShowSettings(!showSettings);
+              pauseSound();
+            }}
             className="p-2 hover:bg-white/10 rounded-lg"
           >
             <Settings className="w-4 h-4" />
@@ -295,6 +324,7 @@ const MainPage: React.FC = () => {
           onClick={() => {
             setShowFocusModal(true);
             setMode("focus");
+            pauseSound();
           }}
           className={`${
             theme === "focus" && "ring-2 ring-blue-400/60"
@@ -306,6 +336,7 @@ const MainPage: React.FC = () => {
         <button
           onClick={() => {
             setShowShortBreakModal(true);
+            pauseSound();
           }}
           className={`${
             theme === "short" && "ring-2 ring-emerald-400/60"
@@ -317,6 +348,7 @@ const MainPage: React.FC = () => {
         <button
           onClick={() => {
             setShowLongBreakModal(true);
+            pauseSound();
           }}
           className={`${
             theme === "long" && "ring-2 ring-purple-400/60"

@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { X, Volume2, VolumeOff, Moon, Sun } from "lucide-react";
+import {
+  X,
+  Volume2,
+  VolumeOff,
+  Moon,
+  Sun,
+  Music,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
+import TonesModal from "./TonesModal";
 
 interface SettingsModalProps {
   setShowSettingsModal: (show: boolean) => void;
@@ -14,6 +24,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [notifications, setNotifications] = useState<boolean>(false);
+  const [showTones, setShowTones] = useState<boolean>(false);
 
   /**
    * Loads settings from localStorage on component mount
@@ -43,9 +54,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     }
   };
 
-  /**
-   * Handles dark mode toggle and saves to localStorage
-   */
+  //   Handles dark mode toggle and saves to localStorage
+
   const handleDarkModeToggle = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
@@ -56,9 +66,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     }
   };
 
-  /**
-   * Handles notification toggle and saves to localStorage
-   */
+  // Handles notification toggle and saves to localStorage
+
   const handleNotificationToggle = () => {
     const newNotificationState = !notifications;
     setNotifications(newNotificationState);
@@ -68,14 +77,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         JSON.stringify(newNotificationState)
       );
     } catch (error) {
-      console.log("error")
+      console.log("error");
       console.warn("Failed to save notification setting:", error);
     }
   };
 
-  /**
-   * Closes the modal when clicking outside the content area
-   */
+  //Closes the modal when clicking outside the content area
+
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       setShowSettingsModal(false);
@@ -126,6 +134,26 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               />
             </button>
           </div>
+
+          {/* Choose tone button */}
+          {allowSound && (
+            <div className="flex items-center relative justify-between">
+              <div
+                onClick={() => setShowTones(!showTones)}
+                className="flex items-center space-x-3"
+              >
+                <Music className="text-pink-500 w-5 h-5" />
+                <p className="text-white font-medium">Ringtone</p>
+              </div>
+              <button
+                onClick={() => setShowTones(!showTones)}
+                className=" h-6 w-11 flex justify-end"
+              >
+                {showTones ? <ChevronDown /> : <ChevronRight />}
+              </button>
+              {showTones && <TonesModal setShowTones={setShowTones} />}
+            </div>
+          )}
 
           {/* Dark Mode Setting */}
           <div className="flex items-center justify-between">
@@ -188,12 +216,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         <div className="px-6 py-4 border-t border-white/10">
           <button
             onClick={() => setShowSettingsModal(false)}
-            className="w-full py-2 px-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-lg text-white font-medium transition-all duration-200 hover:scale-[1.02] shadow-lg"
+            className="w-full py-2 px-4 bg-gradient-to-r from-cyan-800 to-blue-800 hover:from-cyan-900 hover:to-blue-900 rounded-lg text-white font-medium transition-all duration-200 hover:scale-[1.02] shadow-lg"
           >
             Done
           </button>
         </div>
       </div>
+      {/* MODALS */}
     </div>
   );
 };
