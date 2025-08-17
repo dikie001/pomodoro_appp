@@ -5,7 +5,7 @@ import complete from "/sounds/sound2.mp3";
 const useSound = () => {
   const soundMap = useMemo(
     () => ({
-      complete: { src: complete, volume: 1, loop: true },
+      complete: { src: complete, volume: 1, loop: false },
       beep: { src: beep, volume: 1, loop: true }, // 👈 beep loops forever
     }),
     []
