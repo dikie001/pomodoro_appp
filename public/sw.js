@@ -3,8 +3,11 @@ const urlsToCache = [
   "/",
   "/index.html",
   "/manifest.json",
-  // "/favicon.ico",
-  // "/static/js/bundle.js",
+  "/sounds/tone1.mp3",
+  "/sounds/tone2.mp3",
+  "/sounds/tone3.mp3",
+  "/sounds/tone4.mp3",
+  "/sounds/tone5.mp3",
 ];
 
 // Install
