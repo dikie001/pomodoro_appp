@@ -124,9 +124,7 @@ const MainPage: React.FC = () => {
     if (playing) {
       intervalRef.current = setInterval(() => {
         setFocusTime((prev) => {
-          if (prev <= 5 && allowSound) {
-            playBeep();
-          }
+      
           if (prev <= -1) {
             if (intervalRef.current !== null) {
               clearInterval(intervalRef.current);
