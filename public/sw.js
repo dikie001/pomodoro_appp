@@ -3,6 +3,7 @@ const urlsToCache = [
   "/",
   "/index.html",
   "/manifest.json",
+  "/sounds/start.mp3",
   "/sounds/tone1.mp3",
   "/sounds/tone2.mp3",
   "/sounds/tone3.mp3",

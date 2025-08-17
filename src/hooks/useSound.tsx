@@ -1,10 +1,9 @@
 import { useRef, useEffect, useMemo } from "react";
 
-
-
 const useSound = () => {
   const soundMap = useMemo(
     () => ({
+      start: { src: "/sounds/start.mp3", volume: 1, loop: false },
       tone1: { src: "/sounds/tone1.mp3", volume: 1, loop: true },
       tone2: { src: "/sounds/tone2.mp3", volume: 1, loop: true },
       tone3: { src: "/sounds/tone3.mp3", volume: 1, loop: true },
@@ -41,17 +40,20 @@ const useSound = () => {
   };
 
   //pause thesounds
-  const pauseSound=()=>{
-    Object.values(audioRefs.current).forEach(audio=> audio.pause())
-  }
+  const pauseSound = () => {
+    Object.values(audioRefs.current).forEach((audio) => audio.pause());
+  };
 
   //check if sound is playing
-  const isPlaying=()=>{
-    if(Object.values(audioRefs.current).some(audio => audio.currentTime>0 || !audio.paused || !audio.ended)){
-      return true
-    }else return false
-  }
-
+  const isPlaying = () => {
+    if (
+      Object.values(audioRefs.current).some(
+        (audio) => audio.currentTime > 0 || !audio.paused || !audio.ended
+      )
+    ) {
+      return true;
+    } else return false;
+  };
 
   return {
     playTone1: () => playSound("tone1"),
@@ -59,6 +61,7 @@ const useSound = () => {
     playTone3: () => playSound("tone3"),
     playTone4: () => playSound("tone4"),
     playTone5: () => playSound("tone5"),
+    playStart: () => playSound("start"),
     pauseSound,
     isPlaying,
   };

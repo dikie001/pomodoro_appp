@@ -44,8 +44,15 @@ const MainPage: React.FC = () => {
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const toneNumberRef = useRef<number | null>(null);
 
-  const { playTone1, playTone2, playTone3, playTone4, playTone5, pauseSound } =
-    useSound();
+  const {
+    playStart,
+    playTone1,
+    playTone2,
+    playTone3,
+    playTone4,
+    playTone5,
+    pauseSound,
+  } = useSound();
 
   const handleFocusMode = (value: number, description: string) => {
     setInitialize(true);
@@ -58,6 +65,7 @@ const MainPage: React.FC = () => {
       timeForResetRef.current = value;
       initialValueRef.current = totalSeconds;
       setPlaying(true);
+      playStart();
     }, 1050);
   };
 
@@ -195,7 +203,6 @@ const MainPage: React.FC = () => {
           : "bg-gradient-to-bl from-purple-950 via-blue-950 to-green-950 "
       } min-h-screen  text-white`}
     >
-    
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-white/10">
         <div className="flex items-center space-x-2">
