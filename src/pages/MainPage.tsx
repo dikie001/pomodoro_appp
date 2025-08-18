@@ -201,10 +201,9 @@ const MainPage: React.FC = () => {
               }
 
               // Vibrate the device
-              if (vibrateRef.current) {
+              if (vibrateRef.current === "true") {
                 vibrate(5000);
                 console.log("vibrating");
-                alert("vibrating")
               }
               // Select tone based on user settings
               if (allowSound) {

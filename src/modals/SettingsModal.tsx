@@ -261,30 +261,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             </button>
           </div>
 
-          {/* Choose vibration intensity */}
-          {allowVibrate && (
-            <div className="flex items-center relative justify-between">
-              <div
-                onClick={() => setShowTones(!showTones)}
-                className="flex items-center space-x-3"
-              >
-                <Music className="text-pink-500 w-5 h-5" />
-                <p className="text-white font-medium">Vibration intensity</p>
-              </div>
-              <button
-                onClick={() => setShowTones(!showTones)}
-                className=" h-6 w-11 flex justify-end"
-              >
-                {showTones ? <ChevronDown /> : <ChevronRight />}
-              </button>
-              {showTones && (
-                <TonesModal
-                  setShowTones={setShowTones}
-                  setSuccess={setSuccess}
-                />
-              )}
-            </div>
-          )}
         </div>
 
         {/* Footer */}
