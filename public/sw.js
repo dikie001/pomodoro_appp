@@ -1,4 +1,5 @@
-const CACHE_NAME = "focus-cache-v2";
+const CACHE_NAME = "focus-cache-v3";
+
 const urlsToCache = [
   "/",
   "/index.html",
@@ -38,14 +39,22 @@ self.addEventListener("activate", (event) => {
 // Fetch handler
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) return response;
-      return fetch(event.request).catch(() => {
-        // Fallback ONLY for navigation requests
-        if (event.request.mode === "navigate") {
-          return caches.match("/index.html");
-        }
-      });
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request)
+        .then((res) => {
+          // Optionally put fetched files into cache
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, res.clone());
+            return res;
+          });
+        })
+        .catch(() => {
+          // Offline fallback for navigation
+          if (event.request.mode === "navigate") {
+            return caches.match("/index.html");
+          }
+        });
     })
   );
 });
