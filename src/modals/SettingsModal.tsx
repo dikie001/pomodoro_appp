@@ -80,6 +80,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const handleDarkModeToggle = () => {
     const newDarkMode = !darkMode;
+    if (!newDarkMode) toast.error("Light mode not enabled!");
     setDarkMode(newDarkMode);
     try {
       localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
@@ -93,7 +94,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const handleNotificationToggle = () => {
     const newNotificationState = !notifications;
     setNotifications(newNotificationState);
-    askPermission(); // Request permission for notifications
+    if (newNotificationState) {
+      askPermission();
+      console.log("asking....");
+    } // Request permission for notifications
 
     // Save the new notification state to localStorage
     try {
@@ -242,7 +246,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Vibration Setting */}
-          {vibrateAvailable &&
+          {vibrateAvailable && (
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 {allowVibrate ? (
@@ -266,7 +270,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 />
               </button>
             </div>
-          }
+          )}
         </div>
 
         {/* Footer */}
