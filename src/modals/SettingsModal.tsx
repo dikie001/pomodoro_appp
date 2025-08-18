@@ -14,6 +14,7 @@ import {
 import TonesModal from "./TonesModal";
 import { askPermission } from "../utils/askPermission";
 import toast from "react-hot-toast";
+import { useVibrationAvailable } from "../hooks/vibrateAvailable";
 
 interface SettingsModalProps {
   setShowSettingsModal: (show: boolean) => void;
@@ -32,9 +33,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const [success, setSuccess] = useState<string>("");
   const [allowVibrate, setAllowVibrate] = useState<boolean>(false);
 
+  const vibrateAvailable = useVibrationAvailable();
+
   // Loads settings from localStorage on component mount
 
   useEffect(() => {
+    console.log(vibrateAvailable);
     try {
       const savedDarkMode = localStorage.getItem("darkMode");
       const savedNotifications = localStorage.getItem("notifications");
@@ -238,29 +242,31 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Vibration Setting */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              {allowVibrate ? (
-                <Vibrate className="w-5 h-5 text-blue-400" />
-              ) : (
-                <VibrateOff className="w-5 h-5 text-gray-400" />
-              )}
-              <span className="text-white font-medium">Vibrate</span>
-            </div>
-            <button
-              onClick={handleVibrationToggle}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
-                allowVibrate ? "bg-blue-600" : "bg-gray-600"
-              }`}
-              aria-label="Toggle vibrate mode"
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
-                  allowVibrate ? "translate-x-6" : "translate-x-1"
+          {vibrateAvailable &&
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                {allowVibrate ? (
+                  <Vibrate className="w-5 h-5 text-blue-400" />
+                ) : (
+                  <VibrateOff className="w-5 h-5 text-gray-400" />
+                )}
+                <span className="text-white font-medium">Vibrate</span>
+              </div>
+              <button
+                onClick={handleVibrationToggle}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
+                  allowVibrate ? "bg-blue-600" : "bg-gray-600"
                 }`}
-              />
-            </button>
-          </div>
+                aria-label="Toggle vibrate mode"
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                    allowVibrate ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+          }
         </div>
 
         {/* Footer */}
