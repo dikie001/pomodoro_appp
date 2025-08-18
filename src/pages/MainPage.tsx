@@ -202,7 +202,7 @@ const MainPage: React.FC = () => {
 
               // Vibrate the device
               if (vibrateRef.current) {
-                vibrate();
+                vibrate(5000);
                 console.log("vibrating");
                 alert("vibrating")
               }
