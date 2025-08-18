@@ -17,7 +17,7 @@ import LongBreakModal from "../modals/LongBreakModal";
 import ShortBreakModal from "../modals/ShortBreakModal";
 import useSound from "../hooks/useSound";
 import SettingsModal from "../modals/SettingsModal";
-import { askPermission, showLocalNotification } from "../utils/askPermission";
+import { showLocalNotification } from "../utils/askPermission";
 
 const MODE = "mode_type";
 
@@ -85,7 +85,6 @@ const MainPage: React.FC = () => {
     console.log(focusTime);
     setTheme("focus");
     getSoundSettings();
-    askPermission();
     getNotificationSettings();
   }, []);
 
