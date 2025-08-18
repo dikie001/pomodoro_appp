@@ -2,7 +2,9 @@
 export const askPermission = async () => {
   const permission = await Notification.requestPermission();
   if (permission !== "granted") {
-    alert("Notifications are blocked ");
+    alert(
+      "Notifications are blocked in your browser settings. Please enable them manually."
+    );
   }
 };
 
