@@ -72,8 +72,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const handleNotificationToggle = () => {
     const newNotificationState = !notifications;
     setNotifications(newNotificationState);
-    askPermission(); // Request permission for notifications
- 
+if( newNotificationState ) {
+      askPermission();
+    }
+    // Save the new notification state to localStorage
     try {
       localStorage.setItem(
         "notifications",
