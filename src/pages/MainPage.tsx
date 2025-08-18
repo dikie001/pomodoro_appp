@@ -121,6 +121,8 @@ const MainPage: React.FC = () => {
   //function to run everytime the settings modal closes
   useEffect(() => {
     getSoundSettings();
+    getNotificationSettings();
+    getVibrateSettings();
   }, [showSettings]);
 
   // Get the current mode from local storage for theming
