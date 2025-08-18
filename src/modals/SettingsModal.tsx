@@ -280,7 +280,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               setShowSettingsModal(false);
               toast.success("Setting updated!");
             }}
-            className="px-6 py-2.5 w-full font-medium rounded-xl bg-gradient-to-r from-purple-800 to-blue-800 text-white hover:from-purple-900 hover:to-blue-900 transition-all duration-200 shadow-lg shadow-purple-800/25 hover:scale-105"
+            className="px-6 py-3 w-full font-medium rounded-2xl bg-gradient-to-r from-purple-800 to-blue-800 text-white hover:from-purple-900 hover:to-blue-900 transition-all duration-200 shadow-lg shadow-purple-800/25 hover:scale-105"
           >
             Save settings
           </button>
