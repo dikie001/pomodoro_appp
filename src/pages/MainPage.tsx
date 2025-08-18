@@ -17,6 +17,7 @@ import LongBreakModal from "../modals/LongBreakModal";
 import ShortBreakModal from "../modals/ShortBreakModal";
 import useSound from "../hooks/useSound";
 import SettingsModal from "../modals/SettingsModal";
+import { askPermission, showLocalNotification } from "../utils/askPermission";
 
 const MODE = "mode_type";
 
@@ -83,6 +84,7 @@ const MainPage: React.FC = () => {
     console.log(focusTime);
     setTheme("focus");
     getSoundSettings();
+    askPermission();
   }, []);
 
   //get the sound and tone settings from storage
@@ -117,6 +119,13 @@ const MainPage: React.FC = () => {
       if (currentMode) {
         modeTypeRef.current = currentMode;
         setTheme(currentMode);
+        currentMode === "focus"
+          ? showLocalNotification("Focus", "Pomodoro session initiated")
+          : currentMode === "short"
+          ? showLocalNotification("Short Break", "Time to take a short stroll")
+          : currentMode === "long"
+          ? showLocalNotification("Long Break", "Take a nap maybe?")
+          : "";
       }
       setInitialize(false);
     }, 1000);
@@ -151,7 +160,16 @@ const MainPage: React.FC = () => {
               clearInterval(intervalRef.current);
               intervalRef.current = null;
               setMode("");
-              console.log("timer reached zero...");
+              modeTypeRef.current === "focus"
+                ? showLocalNotification("Focus", "Pomodoro session completed")
+                : modeTypeRef.current === "short"
+                ? showLocalNotification(
+                    "Short Break",
+                    "Your short break has ended"
+                  )
+                : modeTypeRef.current === "long"
+                ? showLocalNotification("Long Break", "Get back to work champ")
+                : "";
               initialValueRef.current = 0;
               setPlaying(false);
 
