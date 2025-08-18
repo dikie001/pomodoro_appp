@@ -224,7 +224,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Footer */}
         <div className="px-6 py-4 border-t border-white/10">
           <button
-            onClick={() => setShowSettingsModal(false)}
+            onClick={() => {
+              setShowSettingsModal(false);
+              alert("Settings saved successfully!"); 
+            }}
             className="w-full py-2 px-4 bg-gradient-to-r from-cyan-800 to-blue-800 hover:from-cyan-900 hover:to-blue-900 rounded-xl text-white font-medium transition-all duration-200 hover:scale-[1.02] shadow-lg"
           >
             Done
