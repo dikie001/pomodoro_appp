@@ -121,10 +121,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/60 backdrop-blur-lg flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl w-full max-w-sm animate-in fade-in-0 zoom-in-95 duration-200">
+      <div className="bg-gradient-to-br from-purple-500/10 via-blue-500/5 to-indigo-500/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-[0_25px_60px_-12px_rgba(147,51,234,0.4)] p-2 max-w-md w-full mx-4 transform transition-all duration-300 hover:scale-[1.02] animate-in fade-in-0 zoom-in-95">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-xl font-semibold text-white ">Settings</h2>
@@ -280,9 +280,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               setShowSettingsModal(false);
               toast.success("Setting updated!");
             }}
-            className="w-full py-2 px-4 bg-gradient-to-r from-cyan-800 to-blue-800 hover:from-cyan-900 hover:to-blue-900 rounded-xl text-white font-medium transition-all duration-200 hover:scale-[1.02] shadow-lg"
+            className="px-6 py-2.5 w-full font-medium rounded-xl bg-gradient-to-r from-purple-800 to-blue-800 text-white hover:from-purple-900 hover:to-blue-900 transition-all duration-200 shadow-lg shadow-purple-800/25 hover:scale-105"
           >
-            Done
+            Save settings
           </button>
         </div>
         {/* MODALS */}

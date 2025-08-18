@@ -138,14 +138,17 @@ const MainPage: React.FC = () => {
         setTheme(currentMode);
         if (notificationRef.current === "true") {
           currentMode === "focus"
-            ? showLocalNotification("Focus", "Pomodoro session initiated")
+            ? showLocalNotification("Focus", "Focus mode started — lock in!")
             : currentMode === "short"
             ? showLocalNotification(
                 "Short Break",
-                "Time to take a short stroll"
+                "Quick break — stretch it out."
               )
             : currentMode === "long"
-            ? showLocalNotification("Long Break", "Take a nap maybe?")
+            ? showLocalNotification(
+                "Long Break",
+                "Long break — relax & recharge."
+              )
             : "";
         }
       }
@@ -188,16 +191,19 @@ const MainPage: React.FC = () => {
               // Show notifications
               if (notificationRef.current === "true") {
                 modeTypeRef.current === "focus"
-                  ? showLocalNotification("Focus", "Pomodoro session completed")
+                  ? showLocalNotification(
+                      "Focus",
+                      "Focus session complete! Time for a breather."
+                    )
                   : modeTypeRef.current === "short"
                   ? showLocalNotification(
                       "Short Break",
-                      "Your short break has ended"
+                      "Short break over, let’s get back in!"
                     )
                   : modeTypeRef.current === "long"
                   ? showLocalNotification(
                       "Long Break",
-                      "Get back to work champ"
+                      "Long break done. Ready to crush it?"
                     )
                   : "";
               }
