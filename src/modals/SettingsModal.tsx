@@ -124,7 +124,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
       className="fixed inset-0 bg-black/60 backdrop-blur-lg flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-gradient-to-br from-purple-500/10 via-blue-500/5 to-indigo-500/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-[0_25px_60px_-12px_rgba(147,51,234,0.4)] p-2 max-w-md w-full mx-4 transform transition-all duration-300 hover:scale-[1.02] animate-in fade-in-0 zoom-in-95">
+      <div className="bg-gradient-to-br  from-purple-500/10 via-blue-500/5 to-indigo-500/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-[0_25px_60px_-12px_rgba(147,51,234,0.4)] p-2 max-w-md w-full mx-4 transform transition-all duration-300 hover:scale-[1.02] animate-in fade-in-0 zoom-in-95">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-xl font-semibold text-white ">Settings</h2>

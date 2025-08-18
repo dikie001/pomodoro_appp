@@ -20,81 +20,85 @@ const TonesModal = ({ setShowTones, setSuccess }: MainProps) => {
 
   const { playTone1, playTone2, playTone3, playTone4, playTone5, pauseSound } =
     useSound();
-  useEffect(() => {
-    loadSettings();
-  }, []);
 
-  const loadSettings = () => {
+  useEffect(() => {
     const settings = localStorage.getItem(TONE_KEY);
     const toneId = settings ? Number(settings) : 0;
     if (!toneId) return;
 
     setTones((prev) =>
-      prev.map((tone) =>
-        tone.id === toneId
-          ? { ...tone, current: true }
-          : { ...tone, current: false }
-      )
+      prev.map((tone) => ({ ...tone, current: tone.id === toneId }))
+    );
+  }, []);
+
+  const handleToneClick = (id: number) => {
+    pauseSound();
+    const playFunctions = [
+      playTone1,
+      playTone2,
+      playTone3,
+      playTone4,
+      playTone5,
+    ];
+    playFunctions[id - 1]?.();
+
+    localStorage.setItem(TONE_KEY, JSON.stringify(id));
+    setTones((prev) =>
+      prev.map((tone) => ({ ...tone, current: tone.id === id }))
     );
   };
 
-  //handle tone buttons click
-  const handleToneClick = (id: number) => {
+  const handleSetTone = () => {
+    setShowTones(false);
     pauseSound();
-    id === 1
-      ? playTone1()
-      : id === 2
-      ? playTone2()
-      : id === 3
-      ? playTone3()
-      : id === 4
-      ? playTone4()
-      : id === 5
-      ? playTone5()
-      : "";
-    localStorage.setItem(TONE_KEY, JSON.stringify(id));
-    loadSettings();
+    setSuccess("tones");
+    setTimeout(() => setSuccess(""), 2000);
   };
+
   return (
-    <div className="absolute  z-54 top-6 right-0   ">
-      <div className="w-full  max-w-sm rounded-2xl border border-white/10 bg-gradient-to-br from-gray-900/95 to-gray-800/95 p-6 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-200">
+    <div className="absolute z-54 top-6 right-0">
+      <div className="max-w-sm w-50 rounded-2xl border border-white/20 bg-gradient-to-br from-gray-900/98 to-gray-800/98 backdrop-blur-xl p-6  shadow-[0_20px_40px_-4px_rgba(0,0,0,0.3)] animate-in fade-in-0 zoom-in-95 duration-200">
         <button
           onClick={() => setShowTones(false)}
-          className="p-2 hover:bg-white/10 rounded-lg transition-colors absolute top-2 right-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="absolute top-2 right-2 p-1.5 hover:bg-white/10 rounded-lg transition-colors group"
           aria-label="Close settings"
         >
-          <X className="w-5 h-5 text-gray-400" />
-        </button>{" "}
-        <h1 className="mb-4 border-b border-gray-700 pb-2 text-center text-lg font-semibold text-white">
-          🎵 Choose a Tone
-        </h1>
-        <div className="flex flex-col gap-2">
+          <X className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
+        </button>
+
+        <div className="text-center mb-5">
+          <h1 className="text-lg font-semibold text-white mb-1">
+            🎵 Choose Tone
+          </h1>
+          <div className="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent" />
+        </div>
+
+        <div className="space-y-2 mb-4">
           {tones.map((tone) => (
             <button
               key={tone.id}
               onClick={() => handleToneClick(tone.id)}
-              className="w-full flex min-w-50 items-center justify-between rounded-xl bg-gray-800 shadow-lg  px-4 py-2 text-sm text-gray-200 transition hover:bg-gray-700/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full flex items-center justify-between shadow-lg rounded-xl px-4 py-2 text-sm transition-all duration-200 group ${
+                tone.current
+                  ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 text-white shadow-lg shadow-cyan-500/10"
+                  : "bg-gray-800/80 hover:bg-gray-700/90 text-gray-300 hover:text-white border border-transparent hover:border-gray-600/50"
+              }`}
             >
-              <span>{tone.name}</span>
+              <span className="font-medium">{tone.name}</span>
               {tone.current && (
-                <Check className="text-cyan-500" size={18} strokeWidth={2.5} />
+                <Check className="text-cyan-400 w-4 h-4" strokeWidth={2.5} />
               )}
             </button>
           ))}
-          <p
-            onClick={() => {
-              setShowTones(false);
-              pauseSound();
-              setSuccess("tones");
-              setTimeout(() => {
-                setSuccess("");
-              }, 2000);
-            }}
-            className="text-center active:underline cursor-pointer text-sm mt-1 text-cyan-400 font-medium"
-          >
-            Set Tone
-          </p>
         </div>
+
+        <button
+          onClick={handleSetTone}
+          className="px-6 py-2.5 w-full font-medium rounded-xl bg-gradient-to-r from-purple-800 to-blue-800 text-white hover:from-purple-900 hover:to-blue-900 transition-all duration-200 shadow-lg shadow-purple-800/25 hover:scale-105"
+          aria-label="Set Tone"
+        >
+          Set Tone
+        </button>
       </div>
     </div>
   );
