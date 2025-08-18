@@ -5,6 +5,7 @@ export const askPermission = async () => {
     alert(
       "Notifications are blocked in your browser settings. Please enable them manually."
     );
+    return false
   }
 };
 
