@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Download, X, Smartphone, Monitor } from "lucide-react";
 import MainPage from "./pages/MainPage";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -50,6 +51,7 @@ const App = () => {
 
   return (
     <>
+      <Toaster />
       <MainPage />
 
       {/* PWA Install Prompt */}
@@ -124,7 +126,6 @@ const App = () => {
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

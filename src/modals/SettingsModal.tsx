@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import TonesModal from "./TonesModal";
 import { askPermission } from "../utils/askPermission";
+import toast from "react-hot-toast";
 
 interface SettingsModalProps {
   setShowSettingsModal: (show: boolean) => void;
@@ -267,7 +268,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           <button
             onClick={() => {
               setShowSettingsModal(false);
-              alert("Settings saved successfully!");
+              toast.success("Setting updated!");
             }}
             className="w-full py-2 px-4 bg-gradient-to-r from-cyan-800 to-blue-800 hover:from-cyan-900 hover:to-blue-900 rounded-xl text-white font-medium transition-all duration-200 hover:scale-[1.02] shadow-lg"
           >
