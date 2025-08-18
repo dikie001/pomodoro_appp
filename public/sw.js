@@ -1,4 +1,3 @@
-const { default: toast } = require("react-hot-toast");
 
 const CACHE_NAME = "focus-cache-v3";
 
@@ -45,7 +44,7 @@ self.addEventListener("fetch", (event) => {
       if (cached) return cached;
       return fetch(event.request)
         .then((res) => {
-          toast.success("Fetched from network: " + event.request.url);
+          alert("Network fetch successful!"); // Notify on successful fetch
           // Optionally put fetched files into cache
           return caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, res.clone());
