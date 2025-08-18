@@ -44,6 +44,7 @@ const MainPage: React.FC = () => {
   const offset = circumference - (progress / 100) * circumference;
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const toneNumberRef = useRef<number | null>(null);
+  const notificationRef = useRef<string | null>(null);
 
   const {
     playStart,
@@ -85,7 +86,14 @@ const MainPage: React.FC = () => {
     setTheme("focus");
     getSoundSettings();
     askPermission();
+    getNotificationSettings();
   }, []);
+
+  //get notification settings from storage
+  const getNotificationSettings = () => {
+    const notificationSettings = localStorage.getItem("notifications");
+    notificationRef.current = notificationSettings;
+  };
 
   //get the sound and tone settings from storage
   const getSoundSettings = () => {
@@ -119,13 +127,18 @@ const MainPage: React.FC = () => {
       if (currentMode) {
         modeTypeRef.current = currentMode;
         setTheme(currentMode);
-        currentMode === "focus"
-          ? showLocalNotification("Focus", "Pomodoro session initiated")
-          : currentMode === "short"
-          ? showLocalNotification("Short Break", "Time to take a short stroll")
-          : currentMode === "long"
-          ? showLocalNotification("Long Break", "Take a nap maybe?")
-          : "";
+        if (notificationRef.current === "true") {
+          currentMode === "focus"
+            ? showLocalNotification("Focus", "Pomodoro session initiated")
+            : currentMode === "short"
+            ? showLocalNotification(
+                "Short Break",
+                "Time to take a short stroll"
+              )
+            : currentMode === "long"
+            ? showLocalNotification("Long Break", "Take a nap maybe?")
+            : "";
+        }
       }
       setInitialize(false);
     }, 1000);
@@ -160,16 +173,21 @@ const MainPage: React.FC = () => {
               clearInterval(intervalRef.current);
               intervalRef.current = null;
               setMode("");
-              modeTypeRef.current === "focus"
-                ? showLocalNotification("Focus", "Pomodoro session completed")
-                : modeTypeRef.current === "short"
-                ? showLocalNotification(
-                    "Short Break",
-                    "Your short break has ended"
-                  )
-                : modeTypeRef.current === "long"
-                ? showLocalNotification("Long Break", "Get back to work champ")
-                : "";
+              if (notificationRef.current === "true") {
+                modeTypeRef.current === "focus"
+                  ? showLocalNotification("Focus", "Pomodoro session completed")
+                  : modeTypeRef.current === "short"
+                  ? showLocalNotification(
+                      "Short Break",
+                      "Your short break has ended"
+                    )
+                  : modeTypeRef.current === "long"
+                  ? showLocalNotification(
+                      "Long Break",
+                      "Get back to work champ"
+                    )
+                  : "";
+              }
               initialValueRef.current = 0;
               setPlaying(false);
 

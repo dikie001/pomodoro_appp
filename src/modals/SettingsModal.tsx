@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import TonesModal from "./TonesModal";
+import { askPermission } from "../utils/askPermission";
 
 interface SettingsModalProps {
   setShowSettingsModal: (show: boolean) => void;
@@ -42,9 +43,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     }
   }, []);
 
-  /**
-   * Handles sound toggle and saves to localStorage
-   */
+  //  Handles sound toggle and saves to localStorage
+
   const handleSoundToggle = () => {
     const newSoundState = !allowSound;
     setAllowSound(newSoundState);
@@ -72,6 +72,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const handleNotificationToggle = () => {
     const newNotificationState = !notifications;
     setNotifications(newNotificationState);
+    askPermission(); // Request permission for notifications
+ 
     try {
       localStorage.setItem(
         "notifications",
@@ -229,7 +231,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
         {/* MODALS */}
         {success !== "" && (
-          <div className="absolute top-2 py-2 px-6 font-medium rounded-xl shadow-lg  left-1/2 -translate-x-1/2  bg-gradient-to-r from-cyan-800 to-blue-800 ">
+          <div className="absolute  top-2  py-2 px-6 font-medium rounded-xl shadow-lg shadow-black/40 left-1/2 -translate-x-1/2  bg-gradient-to-r from-cyan-900 to-blue-900 ">
             {success === "tones" && "Tones updated "}
           </div>
         )}

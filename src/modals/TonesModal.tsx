@@ -81,7 +81,7 @@ const TonesModal = ({ setShowTones,setSuccess }: MainProps) => {
               setSuccess("tones")
               setTimeout(()=>{
                 setSuccess("")
-              },1000)
+              },2000)
               
             }}
             className="text-center active:underline cursor-pointer text-sm mt-1 text-cyan-400 font-medium"
