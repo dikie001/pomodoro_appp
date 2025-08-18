@@ -118,10 +118,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
       <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl w-full max-w-sm animate-in fade-in-0 zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <h2 className="text-xl font-semibold text-white">Settings</h2>
+          <h2 className="text-xl font-semibold text-white ">Settings</h2>
           <button
             onClick={() => setShowSettingsModal(false)}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors absolute top-2 right-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             aria-label="Close settings"
           >
             <X className="w-5 h-5 text-gray-400" />
@@ -260,7 +260,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               />
             </button>
           </div>
-
         </div>
 
         {/* Footer */}

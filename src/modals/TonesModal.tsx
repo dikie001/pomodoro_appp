@@ -1,15 +1,15 @@
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import useSound from "../hooks/useSound";
 
 interface MainProps {
   setShowTones: React.Dispatch<React.SetStateAction<boolean>>;
-  setSuccess: React.Dispatch<React.SetStateAction<string>>
+  setSuccess: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const TONE_KEY = "tone";
 
-const TonesModal = ({ setShowTones,setSuccess }: MainProps) => {
+const TonesModal = ({ setShowTones, setSuccess }: MainProps) => {
   const [tones, setTones] = useState([
     { id: 1, name: "Tone 1", current: true },
     { id: 2, name: "Tone 2", current: false },
@@ -27,6 +27,7 @@ const TonesModal = ({ setShowTones,setSuccess }: MainProps) => {
   const loadSettings = () => {
     const settings = localStorage.getItem(TONE_KEY);
     const toneId = settings ? Number(settings) : 0;
+    if (!toneId) return;
 
     setTones((prev) =>
       prev.map((tone) =>
@@ -56,11 +57,17 @@ const TonesModal = ({ setShowTones,setSuccess }: MainProps) => {
   };
   return (
     <div className="absolute  z-54 top-6 right-0   ">
-      <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-gradient-to-br from-gray-900/95 to-gray-800/95 p-6 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-200">
+      <div className="w-full  max-w-sm rounded-2xl border border-white/10 bg-gradient-to-br from-gray-900/95 to-gray-800/95 p-6 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-200">
+        <button
+          onClick={() => setShowTones(false)}
+          className="p-2 hover:bg-white/10 rounded-lg transition-colors absolute top-2 right-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          aria-label="Close settings"
+        >
+          <X className="w-5 h-5 text-gray-400" />
+        </button>{" "}
         <h1 className="mb-4 border-b border-gray-700 pb-2 text-center text-lg font-semibold text-white">
           🎵 Choose a Tone
         </h1>
-
         <div className="flex flex-col gap-2">
           {tones.map((tone) => (
             <button
@@ -77,12 +84,11 @@ const TonesModal = ({ setShowTones,setSuccess }: MainProps) => {
           <p
             onClick={() => {
               setShowTones(false);
-              pauseSound()
-              setSuccess("tones")
-              setTimeout(()=>{
-                setSuccess("")
-              },2000)
-              
+              pauseSound();
+              setSuccess("tones");
+              setTimeout(() => {
+                setSuccess("");
+              }, 2000);
             }}
             className="text-center active:underline cursor-pointer text-sm mt-1 text-cyan-400 font-medium"
           >
