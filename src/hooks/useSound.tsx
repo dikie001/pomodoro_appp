@@ -33,6 +33,25 @@ const useSound = () => {
         audio.pause();
         audio.currentTime = 0;
         audio.play().catch(console.warn);
+        // Suppress media controls on Android
+        if (typeof navigator !== "undefined" && navigator.mediaSession) {
+          navigator.mediaSession.metadata = null;
+          navigator.mediaSession.playbackState = "none";
+          (
+            [
+              "play",
+              "pause",
+              "seekbackward",
+              "seekforward",
+              "previoustrack",
+              "nexttrack",
+            ] as MediaSessionAction[]
+          ).forEach((action) => {
+            try {
+              navigator.mediaSession.setActionHandler(action, null);
+            } catch {}
+          });
+        }
       } catch (err) {
         console.warn(`Error playing ${key}:`, err);
       }
