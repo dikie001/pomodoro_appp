@@ -11,8 +11,8 @@ const TONE_KEY = "tone";
 
 const TonesModal = ({ setShowTones, setSuccess }: MainProps) => {
   const [tones, setTones] = useState([
-    { id: 1, name: "Tone 1", current: true },
-    { id: 2, name: "Tone 2", current: false },
+    { id: 1, name: "Tone 1", current: false },
+    { id: 2, name: "Tone 2", current: true },
     { id: 3, name: "Tone 3", current: false },
     { id: 4, name: "Tone 4", current: false },
     { id: 5, name: "Tone 5", current: false },
