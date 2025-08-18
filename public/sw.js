@@ -1,10 +1,9 @@
-
-const CACHE_NAME = "focus-cache-v3";
-
-const urlsToCache = [
+const CACHE_NAME = "focus-cache-v4";
+const APP_SHELL = [
   "/",
   "/index.html",
-  "/manifest.json",
+  "/manifest.webmanifest",
+  "images/logo2.png",
   "/sounds/start.mp3",
   "/sounds/tone1.mp3",
   "/sounds/tone2.mp3",
@@ -13,50 +12,38 @@ const urlsToCache = [
   "/sounds/tone5.mp3",
 ];
 
-// Install and pre-cache
+// Install event – cache app shell
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
-  );
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
+  );
 });
 
-// Activate and cleanup old caches
+// Activate event – clean old caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key !== CACHE_NAME)
-            .map((key) => caches.delete(key))
-        )
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) return caches.delete(key);
+        })
       )
+    )
   );
   self.clients.claim();
 });
 
-// Fetch handler
+// Fetch – serve from cache, fallback to network
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then((res) => {
-          alert("Network fetch successful!"); // Notify on successful fetch
-          // Optionally put fetched files into cache
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, res.clone());
-            return res;
-          });
+      return (
+        cached ||
+        fetch(event.request).then((res) => {
+          return res;
         })
-        .catch(() => {
-          // Offline fallback for navigation
-          if (event.request.mode === "navigate") {
-            return caches.match("/index.html");
-          }
-        });
+      );
     })
   );
 });
