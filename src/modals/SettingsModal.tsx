@@ -37,11 +37,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     try {
       const savedDarkMode = localStorage.getItem("darkMode");
       const savedNotifications = localStorage.getItem("notifications");
-      const savedVibration = localStorage.getItem("vibrate")
+      const savedVibration = localStorage.getItem("vibrate");
 
       setDarkMode(savedDarkMode !== "false");
       setNotifications(savedNotifications === "true");
-      setAllowVibrate(savedVibration !== "false")
+      setAllowVibrate(savedVibration === "true");
     } catch (error) {
       console.warn("Failed to load settings:", error);
     }
@@ -260,6 +260,31 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               />
             </button>
           </div>
+
+          {/* Choose vibration intensity */}
+          {allowVibrate && (
+            <div className="flex items-center relative justify-between">
+              <div
+                onClick={() => setShowTones(!showTones)}
+                className="flex items-center space-x-3"
+              >
+                <Music className="text-pink-500 w-5 h-5" />
+                <p className="text-white font-medium">Vibration intensity</p>
+              </div>
+              <button
+                onClick={() => setShowTones(!showTones)}
+                className=" h-6 w-11 flex justify-end"
+              >
+                {showTones ? <ChevronDown /> : <ChevronRight />}
+              </button>
+              {showTones && (
+                <TonesModal
+                  setShowTones={setShowTones}
+                  setSuccess={setSuccess}
+                />
+              )}
+            </div>
+          )}
         </div>
 
         {/* Footer */}
