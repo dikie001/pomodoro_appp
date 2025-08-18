@@ -1,86 +1,81 @@
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useMemo } from "react";
 
 const useSound = () => {
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const bufferRefs = useRef<Record<string, AudioBuffer | null>>({});
+  const sourceRefs = useRef<Record<string, AudioBufferSourceNode | null>>({});
+
   const soundMap = useMemo(
     () => ({
-      start: { src: "/sounds/start.mp3", volume: 1, loop: false },
-      tone1: { src: "/sounds/tone1.mp3", volume: 1, loop: true },
-      tone2: { src: "/sounds/tone2.mp3", volume: 1, loop: true },
-      tone3: { src: "/sounds/tone3.mp3", volume: 1, loop: true },
-      tone4: { src: "/sounds/tone4.mp3", volume: 1, loop: true },
-      tone5: { src: "/sounds/tone5.mp3", volume: 1, loop: true },
+      start: { src: "/sounds/start.mp3", loop: false },
+      tone1: { src: "/sounds/tone1.mp3", loop: true },
+      tone2: { src: "/sounds/tone2.mp3", loop: true },
+      tone3: { src: "/sounds/tone3.mp3", loop: true },
+      tone4: { src: "/sounds/tone4.mp3", loop: true },
+      tone5: { src: "/sounds/tone5.mp3", loop: true },
     }),
     []
   );
 
-  const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
-
-  useEffect(() => {
-    Object.entries(soundMap).forEach(([key, { src, volume, loop }]) => {
-      const audio = new Audio(src);
-      audio.preload = "auto";
-      audio.volume = volume;
-      audio.loop = loop;
-      audio.load();
-      audioRefs.current[key] = audio;
-    });
-  }, [soundMap]);
-
-  const playSound = (key: keyof typeof soundMap) => {
-    const audio = audioRefs.current[key];
-    if (audio) {
-      try {
-        audio.pause();
-        audio.currentTime = 0;
-        audio.play().catch(console.warn);
-        // Suppress media controls on Android
-        if (typeof navigator !== "undefined" && navigator.mediaSession) {
-          navigator.mediaSession.metadata = null;
-          navigator.mediaSession.playbackState = "none";
-          (
-            [
-              "play",
-              "pause",
-              "seekbackward",
-              "seekforward",
-              "previoustrack",
-              "nexttrack",
-            ] as MediaSessionAction[]
-          ).forEach((action) => {
-            try {
-              navigator.mediaSession.setActionHandler(action, null);
-            } catch {}
-          });
-        }
-      } catch (err) {
-        console.warn(`Error playing ${key}:`, err);
-      }
+  // lazily create AudioContext
+  const getCtx = () => {
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
     }
+    return audioCtxRef.current;
   };
 
-  //pause thesounds
+  const loadBuffer = async (key: keyof typeof soundMap) => {
+    if (bufferRefs.current[key]) return bufferRefs.current[key];
+    const ctx = getCtx();
+    const res = await fetch(soundMap[key].src);
+    const arrBuf = await res.arrayBuffer();
+    const decoded = await ctx.decodeAudioData(arrBuf);
+    bufferRefs.current[key] = decoded;
+    return decoded;
+  };
+
+  const playSound = async (key: keyof typeof soundMap) => {
+    const ctx = getCtx();
+    const buffer = await loadBuffer(key);
+
+    // stop old source if looping
+    if (sourceRefs.current[key]) {
+      try {
+        sourceRefs.current[key]?.stop();
+      } catch {}
+    }
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.loop = soundMap[key].loop;
+    source.connect(ctx.destination);
+    source.start(0);
+
+    sourceRefs.current[key] = source;
+  };
+
   const pauseSound = () => {
-    Object.values(audioRefs.current).forEach((audio) => audio.pause());
+    Object.values(sourceRefs.current).forEach((src) => {
+      try {
+        src?.stop();
+      } catch {}
+    });
+    sourceRefs.current = {};
   };
 
-  //check if sound is playing
   const isPlaying = () => {
-    if (
-      Object.values(audioRefs.current).some(
-        (audio) => audio.currentTime > 0 || !audio.paused || !audio.ended
-      )
-    ) {
-      return true;
-    } else return false;
+    return Object.values(sourceRefs.current).some((src) => !!src);
   };
 
   return {
+    playStart: () => playSound("start"),
     playTone1: () => playSound("tone1"),
     playTone2: () => playSound("tone2"),
     playTone3: () => playSound("tone3"),
     playTone4: () => playSound("tone4"),
     playTone5: () => playSound("tone5"),
-    playStart: () => playSound("start"),
     pauseSound,
     isPlaying,
   };
