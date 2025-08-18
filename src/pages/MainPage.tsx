@@ -18,6 +18,7 @@ import ShortBreakModal from "../modals/ShortBreakModal";
 import useSound from "../hooks/useSound";
 import SettingsModal from "../modals/SettingsModal";
 import { showLocalNotification } from "../utils/askPermission";
+import { vibrate } from "../hooks/useVibrate";
 
 const MODE = "mode_type";
 
@@ -38,6 +39,7 @@ const MainPage: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [focusRemainingTime, setFocusRemainingTime] = useState<string>("25:00");
   const initialValueRef = useRef<number>(1500);
+  const vibrateRef = useRef<string | null>(null);
   const intervalRef = useRef<number | null>(null);
   const radius = 45;
   const circumference = 2 * Math.PI * radius;
@@ -86,8 +88,14 @@ const MainPage: React.FC = () => {
     setTheme("focus");
     getSoundSettings();
     getNotificationSettings();
+    getVibrateSettings();
   }, []);
 
+  //get vibrate settings
+  const getVibrateSettings = () => {
+    const vibrateSettings = localStorage.getItem("vibrate");
+    vibrateRef.current = vibrateSettings;
+  };
   //get notification settings from storage
   const getNotificationSettings = () => {
     const notificationSettings = localStorage.getItem("notifications");
@@ -172,6 +180,10 @@ const MainPage: React.FC = () => {
               clearInterval(intervalRef.current);
               intervalRef.current = null;
               setMode("");
+              initialValueRef.current = 0;
+              setPlaying(false);
+
+              // Show notifications
               if (notificationRef.current === "true") {
                 modeTypeRef.current === "focus"
                   ? showLocalNotification("Focus", "Pomodoro session completed")
@@ -187,9 +199,12 @@ const MainPage: React.FC = () => {
                     )
                   : "";
               }
-              initialValueRef.current = 0;
-              setPlaying(false);
 
+              // Vibrate the device
+              if (vibrateRef.current) {
+                vibrate();
+                console.log("vibrating");
+              }
               // Select tone based on user settings
               if (allowSound) {
                 toneNumberRef.current === 1

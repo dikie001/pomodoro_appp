@@ -8,6 +8,8 @@ import {
   Music,
   ChevronDown,
   ChevronRight,
+  Vibrate,
+  VibrateOff,
 } from "lucide-react";
 import TonesModal from "./TonesModal";
 import { askPermission } from "../utils/askPermission";
@@ -27,17 +29,19 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const [notifications, setNotifications] = useState<boolean>(false);
   const [showTones, setShowTones] = useState<boolean>(false);
   const [success, setSuccess] = useState<string>("");
+  const [allowVibrate, setAllowVibrate] = useState<boolean>(false);
 
-  /**
-   * Loads settings from localStorage on component mount
-   */
+  // Loads settings from localStorage on component mount
+
   useEffect(() => {
     try {
       const savedDarkMode = localStorage.getItem("darkMode");
       const savedNotifications = localStorage.getItem("notifications");
+      const savedVibration = localStorage.getItem("vibrate")
 
       setDarkMode(savedDarkMode !== "false");
       setNotifications(savedNotifications === "true");
+      setAllowVibrate(savedVibration !== "false")
     } catch (error) {
       console.warn("Failed to load settings:", error);
     }
@@ -52,6 +56,18 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
       localStorage.setItem("sound", JSON.stringify(newSoundState));
     } catch (error) {
       console.warn("Failed to save sound setting:", error);
+    }
+  };
+
+  //Handles vibrate toggle
+  const handleVibrationToggle = () => {
+    const newVibrationState = !allowVibrate;
+    setAllowVibrate(newVibrationState);
+
+    try {
+      localStorage.setItem("vibrate", JSON.stringify(newVibrationState));
+    } catch (error) {
+      console.warn("Failed to save vibration setting:", error);
     }
   };
 
@@ -219,6 +235,31 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               />
             </button>
           </div>
+
+          {/* Vibration Setting */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              {allowVibrate ? (
+                <Vibrate className="w-5 h-5 text-blue-400" />
+              ) : (
+                <VibrateOff className="w-5 h-5 text-gray-400" />
+              )}
+              <span className="text-white font-medium">Vibrate</span>
+            </div>
+            <button
+              onClick={handleVibrationToggle}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
+                allowVibrate ? "bg-blue-600" : "bg-gray-600"
+              }`}
+              aria-label="Toggle vibrate mode"
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                  allowVibrate ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
         </div>
 
         {/* Footer */}
@@ -226,7 +267,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           <button
             onClick={() => {
               setShowSettingsModal(false);
-              alert("Settings saved successfully!"); 
+              alert("Settings saved successfully!");
             }}
             className="w-full py-2 px-4 bg-gradient-to-r from-cyan-800 to-blue-800 hover:from-cyan-900 hover:to-blue-900 rounded-xl text-white font-medium transition-all duration-200 hover:scale-[1.02] shadow-lg"
           >
