@@ -1,4 +1,4 @@
-const CACHE_NAME = "focus-cache-v1";
+const CACHE_NAME = "focus-cache-v2";
 const urlsToCache = [
   "/",
   "/index.html",
