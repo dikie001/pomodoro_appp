@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Zap, Target, Flame, Crown, Rocket } from "lucide-react";
+import { Crown, Flame, Target, Zap } from "lucide-react";
+import React, { useCallback, useEffect, useState } from "react";
 
-const NeonReactionBlaster = () => {
+const NeonReactionBlaster = () => {  
   const [gameState, setGameState] = useState<
     "menu" | "countdown" | "playing" | "gameOver"
   >("menu");

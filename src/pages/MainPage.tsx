@@ -20,6 +20,7 @@ import useSound from "../hooks/useSound";
 import SettingsModal from "../modals/SettingsModal";
 import { showLocalNotification } from "../utils/askPermission";
 import { vibrate } from "../hooks/useVibrate";
+import NeonReactionBlaster from "../modals/Game";
 
 const MODE = "mode_type";
 
@@ -465,6 +466,11 @@ const MainPage: React.FC = () => {
       )}
 
       {initialize && <LoadingModal />}
+      {showGame && (
+        <div className="absolute z-50 inset-0">
+          <NeonReactionBlaster />
+        </div>
+      )}
     </div>
   );
 };
