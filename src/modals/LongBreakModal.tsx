@@ -147,13 +147,13 @@ const LongBreakModal: React.FC<LongBreakModalProps> = ({
             <div className="flex gap-3 justify-between">
               <button
                 onClick={() => setShowCustomInput(false)}
-                className="px-6 py-2.5 rounded-xl font-medium bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white transition-all duration-200 border border-white/10"
+                className="px-8 py-2.5 rounded-xl font-medium bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white transition-all duration-200 border border-white/10"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirm}
-                className="px-6 py-2.5 font-medium rounded-xl bg-gradient-to-r from-purple-800 to-blue-800 text-white hover:from-purple-600 hover:to-blue-600 transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105"
+                className="px-8 py-2.5 font-medium rounded-xl bg-gradient-to-r from-purple-800 to-blue-800 text-white hover:from-purple-600 hover:to-blue-600 transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105"
               >
                 Confirm
               </button>
