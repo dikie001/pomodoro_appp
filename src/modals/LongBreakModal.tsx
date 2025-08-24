@@ -65,6 +65,7 @@ const LongBreakModal: React.FC<LongBreakModalProps> = ({
         role="dialog"
         aria-labelledby="long-break-modal-title"
         aria-modal="true"
+
       >
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-400/20 rounded-full mb-4">
