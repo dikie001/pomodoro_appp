@@ -3,6 +3,7 @@ import {
   Coffee,
   Focus,
   Gamepad,
+  LucideGamepad,
   Pause,
   Play,
   RotateCcw,
@@ -21,12 +22,14 @@ import SettingsModal from "../modals/SettingsModal";
 import { showLocalNotification } from "../utils/askPermission";
 import { vibrate } from "../hooks/useVibrate";
 import NeonReactionBlaster from "../modals/Game";
+import CyberDodgeArena from "../modals/Game2";
 
 const MODE = "mode_type";
 
 const MainPage: React.FC = () => {
   const [showFocusModal, setShowFocusModal] = useState<boolean>(false);
   const [showGame, setShowGame] = useState(false);
+  const [showGame2, setShowGame2] = useState(false);
   const [initialize, setInitialize] = useState<boolean>(false);
   const [allowSound, setAllowSound] = useState<boolean>(true);
   const soundSettingsRef = useRef<boolean>(true);
@@ -288,6 +291,15 @@ const MainPage: React.FC = () => {
             <Gamepad className="w-4 h-4" />
           </button>
           <button
+            onClick={() => {
+              setShowGame2(!showGame2);
+              pauseSound();
+            }}
+            className="p-2 hover:bg-white/10 rounded-lg"
+          >
+            <LucideGamepad className="w-4 h-4" />
+          </button>{" "}
+          <button
             onClick={handleSoundClick}
             className="p-2 hover:bg-white/10 rounded-lg"
           >
@@ -471,6 +483,13 @@ const MainPage: React.FC = () => {
           <NeonReactionBlaster />
         </div>
       )}
+      {showGame2 && (
+        <div className="absolute z-50 inset-0">
+          <CyberDodgeArena />
+        </div>
+      )}
+
+
     </div>
   );
 };

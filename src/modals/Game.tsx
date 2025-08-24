@@ -11,10 +11,10 @@ const NeonReactionBlaster = () => {
     return parseInt(saved);
   });
   const [timeLeft, setTimeLeft] = useState(30);
-  const [targets, setTargets] = useState<
+  const [targets, setTargets] = useState<   
     Array<{
       id: number;
-      x: number;
+      x: number;    
       y: number;
       type: "normal" | "bonus" | "bomb";
       scale: number;
