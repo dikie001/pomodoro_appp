@@ -2,6 +2,7 @@ import {
   Bed,
   Coffee,
   Focus,
+  Gamepad,
   Pause,
   Play,
   RotateCcw,
@@ -24,6 +25,7 @@ const MODE = "mode_type";
 
 const MainPage: React.FC = () => {
   const [showFocusModal, setShowFocusModal] = useState<boolean>(false);
+  const [showGame, setShowGame] = useState(false);
   const [initialize, setInitialize] = useState<boolean>(false);
   const [allowSound, setAllowSound] = useState<boolean>(true);
   const soundSettingsRef = useRef<boolean>(true);
@@ -275,6 +277,15 @@ const MainPage: React.FC = () => {
           </h1>
         </div>
         <div className="flex items-center space-x-2">
+          <button
+            onClick={() => {
+              setShowGame(!showGame);
+              pauseSound();
+            }}
+            className="p-2 hover:bg-white/10 rounded-lg"
+          >
+            <Gamepad className="w-4 h-4" />
+          </button>
           <button
             onClick={handleSoundClick}
             className="p-2 hover:bg-white/10 rounded-lg"
