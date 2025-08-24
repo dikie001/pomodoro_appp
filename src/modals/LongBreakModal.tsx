@@ -144,7 +144,7 @@ const LongBreakModal: React.FC<LongBreakModalProps> = ({
               />
             </div>
 
-            <div className="flex gap-3 justify-end">
+            <div className="flex gap-3 justify-between">
               <button
                 onClick={() => setShowCustomInput(false)}
                 className="px-6 py-2.5 rounded-xl font-medium bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white transition-all duration-200 border border-white/10"
