@@ -160,6 +160,7 @@ const LongBreakModal: React.FC<LongBreakModalProps> = ({
             </div>
           </div>
         </div>
+        
       )}
     </div>
   );
