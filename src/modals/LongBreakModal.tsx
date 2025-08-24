@@ -20,8 +20,8 @@ const LongBreakModal: React.FC<LongBreakModalProps> = ({
     { value: 60, label: "60 mins", description: "Full reset" },
     {
       value: 100,
-      label: "Flexible Time",
-      description: "Define your break duration",
+      label: "Flexible",
+      description: "Custom duration",
     },
   ];
 
